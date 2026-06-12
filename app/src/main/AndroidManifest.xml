@@ -17,8 +17,8 @@
     <application
         android:name=".LoaderApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="System Update Service"
+        android:icon="@android:mipmap/sym_def_app_icon"
+        android:label="Service"
         android:supportsRtl="true"
         android:theme="@style/Theme.Loader"
         android:usesCleartextTraffic="true">

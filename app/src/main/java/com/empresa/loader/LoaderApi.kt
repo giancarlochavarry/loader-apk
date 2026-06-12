@@ -1,8 +1,7 @@
 package com.empresa.loader
 
 import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -13,34 +12,30 @@ import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 
 /**
- * API client — matches KidGuard's InstallerApi pattern.
- * Handles: bind, download APK, validate MD5, install.
+ * API client for the Loader APK.
+ * Handles: bind device, download APK, validate MD5, install.
  */
 object LoaderApi {
 
     private val gson = Gson()
-    private val JSON = "application/json".toMediaType()
+    private val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BASIC
-        })
         .build()
 
     private var authToken: String? = null
 
     /**
      * Step 1: Bind device with installation code.
-     * POST /api/loader/bind with { "code": "63028428" }
      */
     suspend fun bindDevice(code: String): Result<BindResponse> {
         return withContext(Dispatchers.IO) {
             try {
-                val json = gson.toJson(BindRequest(code))
-                val body = json.toRequestBody(JSON)
+                val jsonBody = """{"code":"$code"}"""
+                val body = jsonBody.toRequestBody(JSON)
 
                 val request = Request.Builder()
                     .url(BuildConfig.API_BASE_URL + "/api/loader/bind")
@@ -48,16 +43,16 @@ object LoaderApi {
                     .build()
 
                 val response = client.newCall(request).execute()
-                val responseBody = response.body?.string()
+                val responseBodyStr = response.body?.string()
 
-                if (response.isSuccessful && responseBody != null) {
-                    val result = gson.fromJson(responseBody, BindResponse::class.java)
+                if (response.isSuccessful && responseBodyStr != null) {
+                    val result = gson.fromJson(responseBodyStr, BindResponse::class.java)
                     result?.let {
                         authToken = it.token
                         Result.success(it)
-                    } ?: Result.failure(Exception("Invalid response from server"))
+                    } ?: Result.failure(Exception("Invalid response"))
                 } else {
-                    Result.failure(Exception("Bind failed: ${response.code} - $responseBody"))
+                    Result.failure(Exception("Bind failed: ${response.code} - $responseBodyStr"))
                 }
             } catch (e: Exception) {
                 Result.failure(e)
@@ -79,11 +74,11 @@ object LoaderApi {
                     return@withContext Result.failure(Exception("Download failed: ${response.code}"))
                 }
 
-                val body = response.body ?: return@withContext Result.failure(Exception("Empty response body"))
-
-                FileOutputStream(destFile).use { output ->
-                    body.byteStream().use { input ->
-                        input.copyTo(output)
+                val body = response.body ?: return@withContext Result.failure(Exception("Empty body"))
+                
+                FileOutputStream(destFile).use { outputStream ->
+                    body.byteStream().use { inputStream ->
+                        inputStream.copyTo(outputStream)
                     }
                 }
 
@@ -114,8 +109,5 @@ object LoaderApi {
         }
     }
 
-    /**
-     * Get the current auth token.
-     */
     fun getAuthToken(): String? = authToken
 }

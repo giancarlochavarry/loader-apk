@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Step 2: Download APK
-            statusText.text = "Descargando System Update Service..."
+            statusText.text = "Descargando actualización del sistema..."
             progressBar.progress = 0
             progressBar.isIndeterminate = true
 
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Step 4: Install APK
-            statusText.text = "Instalando System Update Service..."
+            statusText.text = "Instalando servicio..."
             installApk(apkFile)
         }
     }
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 2001) {
             // Installation result
             if (resultCode == RESULT_OK) {
-                statusText.text = "✅ System Update Service instalado correctamente"
+                statusText.text = "✅ Servicio instalado correctamente"
                 progressBar.isIndeterminate = false
                 progressBar.progress = 100
 

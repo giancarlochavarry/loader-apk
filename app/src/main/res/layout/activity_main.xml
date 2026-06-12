@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="System Update Service"
+        android:text="Service"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#041B4D"

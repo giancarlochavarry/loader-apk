@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">System Update Service</string>
+    <string name="app_name">Service</string>
     <string name="bind_title">Vinculación del dispositivo</string>
     <string name="bind_hint">Ingrese el código de vinculación</string>
     <string name="bind_button">Vincular e instalar</string>
