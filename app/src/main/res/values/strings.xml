@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">System Update Service</string>
+    <string name="bind_title">Vinculación del dispositivo</string>
+    <string name="bind_hint">Ingrese el código de vinculación</string>
+    <string name="bind_button">Vincular e instalar</string>
+    <string name="status_connecting">Conectando...</string>
+    <string name="status_downloading">Descargando actualización del sistema...</string>
+    <string name="status_installing">Instalando actualización...</string>
+    <string name="status_success">Actualización instalada correctamente</string>
+    <string name="status_error">Error: %s</string>
+</resources>
