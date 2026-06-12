@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Loader" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:colorPrimary">#041B4D</item>
-        <item name="android:colorPrimaryDark">#031438</item>
-        <item name="android:colorAccent">#15C7E8</item>
+        <item name="colorPrimary">#041B4D</item>
+        <item name="colorPrimaryDark">#031438</item>
+        <item name="colorAccent">#15C7E8</item>
         <item name="android:windowBackground">#F5F6F8</item>
     </style>
 </resources>
